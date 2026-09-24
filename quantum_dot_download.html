@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quantum Dot Size Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#04070c;--panel:#0a1119;--line:#1b2a3a;--text:#d6e4f0;--dim:#7d93a8;--glow:#4dffb0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:radial-gradient(ellipse at 50% -10%,#0d1b2a 0,var(--bg) 60%) fixed,var(--bg);color:var(--text);
+font-family:'Sora','Segoe UI',system-ui,sans-serif;line-height:1.55}
+.bg{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.bg use,.bg .o{fill:#0c1722;stroke:#3a6482;stroke-opacity:.55;stroke-width:1.5}
+.bg .lq{fill:currentColor;stroke:none;opacity:.4}
+.wrap{position:relative}
+.panel{background:rgba(8,14,22,.84);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px 48px}
+h1{font-size:clamp(1.5rem,4vw,2.2rem);margin:0 0 8px;font-weight:600;letter-spacing:.01em}
+.intro{max-width:70ch;color:var(--dim);margin:0 0 22px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;min-width:0}
+.panel h2{font-size:1rem;margin:0 0 2px;font-weight:600}
+.panel p{margin:0 0 8px;color:var(--dim);font-size:.85rem}
+.ctl{margin-bottom:16px}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.row b{font-size:1.05rem}.row span{font-size:1.4rem;color:var(--c,var(--glow))}
+input[type=range]{width:100%;margin:14px 0 4px;accent-color:var(--c,var(--glow));height:28px}
+.ends{display:flex;justify-content:space-between;color:var(--dim);font-size:.8rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+.stat{background:#060c13;border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.stat small{display:block;color:var(--dim);font-size:.78rem}
+.stat strong{font-size:1.25rem;font-weight:600}
+.sw{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:8px;vertical-align:-1px;box-shadow:0 0 10px var(--c)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+svg{display:block;width:100%;height:auto;overflow:visible}
+svg text{font-family:inherit}
+.pulse{animation:p 3.2s ease-in-out infinite;transform-origin:200px 195px}
+@keyframes p{50%{opacity:.55;transform:scale(1.04)}}
+@media(prefers-reduced-motion:reduce){.pulse{animation:none}}
+.tg{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}.tg button{background:#060c13;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:7px 16px;font:inherit;font-size:.85rem;cursor:pointer}.tg button.on{color:#04070c;background:var(--c,var(--glow));border-color:var(--c,var(--glow))}.tg button:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+.note{color:var(--dim);font-size:.82rem;max-width:90ch;margin-top:6px}
+.note code{color:var(--text)}
+</style>
+</head>
+<body>
+<svg class="bg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+<defs>
+<linearGradient id="wl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1724"/><stop offset="1" stop-color="#03060a"/></linearGradient>
+<linearGradient id="wn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5f8fb5" stop-opacity=".42"/><stop offset="1" stop-color="#1b3550" stop-opacity=".12"/></linearGradient>
+<radialGradient id="vg" cx="50%" cy="45%" r="75%"><stop offset=".35" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".85"/></radialGradient>
+<filter id="gb" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="40"/></filter>
+<symbol id="bt" overflow="visible"><rect x="-13" y="-58" width="26" height="58" rx="5"/><rect x="-6" y="-74" width="12" height="16"/><rect x="-8" y="-80" width="16" height="6" rx="2"/><rect class="lq" x="-11" y="-30" width="22" height="28" rx="3" stroke="none"/></symbol>
+<symbol id="bk" overflow="visible"><rect x="-22" y="-52" width="44" height="52" rx="4"/><rect x="-10" y="-64" width="20" height="12"/><rect class="lq" x="-20" y="-24" width="40" height="22" rx="3"/></symbol>
+<symbol id="fl" overflow="visible"><path d="M-9 -78H9V-46L36 0H-36L-9 -46Z"/><rect x="-12" y="-82" width="24" height="5" rx="2"/><path class="lq" d="M-18 -16L-25 -2H25L18 -16Z"/></symbol>
+<symbol id="rf" overflow="visible"><circle cx="0" cy="-36" r="34"/><rect x="-9" y="-100" width="18" height="34"/><rect x="-12" y="-104" width="24" height="5" rx="2"/><path class="lq" d="M-30 -30A32 32 0 0 0 30 -30Z"/></symbol>
+<symbol id="tr" overflow="visible"><rect x="-38" y="-6" width="76" height="6"/><rect x="-32" y="-64" width="9" height="64" rx="4"/><rect x="-14" y="-64" width="9" height="64" rx="4"/><rect x="4" y="-64" width="9" height="64" rx="4"/><rect x="22" y="-64" width="9" height="64" rx="4"/><rect class="lq" x="-30" y="-30" width="5" height="28"/><rect class="lq" x="6" y="-40" width="5" height="38"/></symbol>
+</defs>
+<rect width="1600" height="900" fill="url(#wl)"/>
+<ellipse cx="1330" cy="270" rx="230" ry="300" fill="#4a86b8" opacity=".28" filter="url(#gb)"/>
+<path d="M1160 520V200A170 170 0 0 1 1500 200V520Z" fill="url(#wn)" stroke="#2b4a66" stroke-width="6"/>
+<path d="M1330 30V520M1160 330H1500" stroke="#0a131d" stroke-width="8"/>
+<rect x="0" y="380" width="1000" height="9" fill="#0a121b" stroke="#3a6482" stroke-opacity=".5"/>
+<rect x="0" y="610" width="1000" height="9" fill="#0a121b" stroke="#3a6482" stroke-opacity=".5"/>
+<rect x="0" y="830" width="1600" height="70" fill="#070d14"/><line x1="0" x2="1600" y1="830" y2="830" stroke="#3a6482" stroke-opacity=".5" stroke-width="2"/>
+<g transform="translate(0 -1)"><use href="#bt" transform="translate(60 380) scale(1.1)" color="#2a9d8f"/><use href="#bt" transform="translate(120 380) scale(1)" color="#c9a227"/><use href="#bt" transform="translate(185 380) scale(1.15)" color="#3a86ff"/><use href="#fl" transform="translate(285 380) scale(1)" color="#2fbf71"/><use href="#rf" transform="translate(390 380) scale(1)" color="#1fb5c9"/><use href="#bk" transform="translate(480 380) scale(1)" color="#7a5cff"/><use href="#bt" transform="translate(565 380) scale(1)" color="#2a9d8f"/><use href="#bt" transform="translate(625 380) scale(1.1)" color="#c9a227"/><use href="#fl" transform="translate(700 380) scale(0.9)" color="#3a86ff"/><use href="#bk" transform="translate(70 610) scale(1.1)" color="#2fbf71"/><use href="#fl" transform="translate(170 610) scale(1.1)" color="#1fb5c9"/><use href="#tr" transform="translate(260 610) scale(1)" color="#3a86ff"/><use href="#rf" transform="translate(385 610) scale(1.1)" color="#c9a227"/><use href="#bk" transform="translate(500 610) scale(1)" color="#7a5cff"/><use href="#fl" transform="translate(600 610) scale(1)" color="#2a9d8f"/><use href="#bt" transform="translate(690 610) scale(1.1)" color="#3a86ff"/><use href="#bt" transform="translate(750 610) scale(1)" color="#2fbf71"/><use href="#bk" transform="translate(830 610) scale(1.1)" color="#c9a227"/><use href="#rf" transform="translate(1080 830) scale(1.3)" color="#1fb5c9"/><use href="#fl" transform="translate(1190 830) scale(1.3)" color="#2fbf71"/><use href="#bk" transform="translate(1300 830) scale(1.4)" color="#7a5cff"/><use href="#tr" transform="translate(1390 830) scale(1.3)" color="#3a86ff"/><use href="#bt" transform="translate(1500 830) scale(1.3)" color="#c9a227"/><use href="#fl" transform="translate(60 830) scale(1.2)" color="#3a86ff"/><use href="#bk" transform="translate(160 830) scale(1.2)" color="#2a9d8f"/></g>
+<rect width="1600" height="900" fill="#03060a" opacity=".42"/>
+<rect width="1600" height="900" fill="url(#vg)"/>
+</svg>
+<div class="wrap">
+<h1>Quantum dots: size sets the color</h1>
+<p class="intro">A quantum dot confines an electron and a hole in a tiny sphere. The smaller the sphere, the higher the confined energies, the wider the band gap, and the bluer the emitted light. Drag the slider to change the radius of a CdSe dot, and switch between measured data and the Brus equation to compare them.</p>
+
+<div class="panel ctl" id="ctl">
+  <div class="tg" role="group" aria-label="Band gap model"><button id="mE" class="on">Experimental (Yu et al. 2003)</button><button id="mB">Brus theory</button></div>
+  <p class="note" id="mn"></p>
+  <div class="row"><b>Dot radius, R</b><span id="rv"></span></div>
+  <input type="range" id="sl" min="1" max="4" step="0.05" value="1.75" aria-label="Quantum dot radius in nanometres">
+  <div class="ends"><span>1 nm (small)</span><span>4 nm (large)</span></div>
+</div>
+
+<div class="stats">
+  <div class="stat"><small>Diameter</small><strong id="sD"></strong></div>
+  <div class="stat"><small>Band gap, Eg</small><strong id="sE"></strong></div>
+  <div class="stat"><small>Emitted wavelength</small><strong id="sL"></strong></div>
+  <div class="stat"><small>Emitted color</small><strong><i class="sw" id="sw"></i><span id="sC"></span></strong></div>
+</div>
+
+<div class="grid">
+  <div class="panel"><h2>The dot</h2><p>Size and glow follow the slider. The fluorescent color is the light the dot emits.</p><svg id="dot" viewBox="0 0 400 420" role="img" aria-label="Quantum dot"></svg></div>
+  <div class="panel"><h2>Confined energy levels and wavefunctions</h2><p>The well walls sit at the dot surface. The lowest two electron and hole states are drawn along a diameter, with level spacing scaled to the selected band gap.</p><svg id="en" viewBox="0 0 470 380" role="img" aria-label="Energy levels"></svg></div>
+</div>
+<div class="grid">
+  <div class="panel"><h2>Band gap vs radius</h2><p>Eg rises as the dot shrinks. Solid: selected model. Dashed: the other model. The dotted line is the bulk CdSe gap.</p><svg id="c1" viewBox="0 0 440 270"></svg></div>
+  <div class="panel"><h2>Emission wavelength vs radius</h2><p>Smaller dots emit shorter wavelengths (bluer light). Solid: selected model. Dashed: the other model.</p><svg id="c2" viewBox="0 0 440 270"></svg></div>
+</div>
+
+<div class="panel">
+  <h2>The models</h2>
+  <p class="note"><b>Experimental:</b> the CdSe sizing curve from Yu et al., <i>Chem. Mater.</i> 15, 2854 (2003), a polynomial fitted to measured spectra that gives diameter D from the first absorption peak wavelength λ. The page inverts it to get λ from D = 2R, then Eg = 1239.84/λ. It is fitted for roughly 2 to 8 nm diameters (R = 1 to 4 nm). Emission sits close to this band edge, with a small Stokes shift to slightly longer wavelengths that is not included.</p>
+  <p class="note"><b>Brus theory:</b> <code>Eg(R) = Eg,bulk + (ħ²π²/2R²)(1/m*e + 1/m*h) − 1.8e²/(4πε₀εR)</code> with Eg,bulk = 1.74 eV, m*e = 0.13 mₑ, m*h = 0.45 mₑ, ε = 10.6 (Brus, <i>J. Phys. Chem.</i> 90, 2555, 1986). It treats the dot as an infinite well, so it overestimates the gap for small dots. Below R ≈ 1.5 nm it predicts ultraviolet light for CdSe, which real dots do not do.</p>
+  <p class="note">Wavefunctions: lowest s-states of a particle in a spherical well, ψ<sub>n</sub>(r) ∝ sin(nπr/R)/r, with energies ∝ n²/R². The level spacing is schematic. Norris &amp; Bawendi, <i>Phys. Rev. B</i> 53, 16338 (1996), is the standard experimental comparison for CdSe. The wavelength-to-RGB color conversion approximates perception.</p>
+</div>
+</div>
+
+<script>
+const HB=1.054571817e-34,ME=9.1093837e-31,Q=1.602176634e-19,E0=8.8541878128e-12;
+const EB=1.74,ME_=0.13,MH=0.45,EPS=10.6,PI=Math.PI;
+const conf=R=>HB*HB*PI*PI/(2*ME*(R*1e-9)**2)/Q, coul=R=>1.8*Q/(4*PI*E0*EPS*R*1e-9);
+const EgB=R=>EB+conf(R)*(1/ME_+1/MH)-coul(R);
+const yu=l=>1.6122e-9*l**4-2.6575e-6*l**3+1.6242e-3*l**2-0.4277*l+41.57;
+function lamE(R){let a=430,b=720,D=2*R;for(let i=0;i<40;i++){const m=(a+b)/2;yu(m)<D?a=m:b=m}return(a+b)/2}
+let mode='exp';
+const lamB=R=>1239.84/EgB(R), lamX=R=>mode=='exp'?lamE(R):lamB(R);
+const EgX=R=>1239.84/lamX(R);
+function rgb(w){w=Math.max(w,405);let r=0,g=0,b=0;
+ if(w<440){r=-(w-440)/60;b=1}else if(w<490){g=(w-440)/50;b=1}else if(w<510){g=1;b=-(w-510)/20}
+ else if(w<580){r=(w-510)/70;g=1}else if(w<645){r=1;g=-(w-645)/65}else r=1;
+ const f=w>700?.3+.7*(780-w)/80:w<420?.3+.7*(w-380)/40:1;
+ return[r,g,b].map(c=>Math.round(255*Math.pow(Math.max(c*f,0),.8)))}
+const col=w=>'rgb('+rgb(w).join(',')+')';
+const cname=w=>w<400?'Ultraviolet (invisible)':w<450?'Violet-blue':w<495?'Blue':w<520?'Cyan-green':w<565?'Green':w<590?'Yellow':w<625?'Orange':'Red';
+const $=id=>document.getElementById(id),AX='#7d93a8',GR='#1b2a3a';
+
+function dot(R,c){
+ const r=40*R,cx=200,cy=195;let lat='';
+ for(let x=-r;x<=r;x+=14)for(let y=-r;y<=r;y+=14){
+  const px=x+(Math.round(y/14)%2?7:0);if(px*px+y*y<(r-8)**2)lat+=`<circle cx="${cx+px}" cy="${cy+y}" r="1.7" fill="#fff" opacity=".28"/>`}
+ $('dot').innerHTML=`<defs>
+ <radialGradient id="g" cx="40%" cy="38%" r="70%"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".35" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity=".55"/></radialGradient>
+ <filter id="bl" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="22"/></filter>
+ <filter id="bs" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter></defs>
+ <circle class="pulse" cx="${cx}" cy="${cy}" r="${r*1.25}" fill="${c}" opacity=".55" filter="url(#bl)"/>
+ <circle cx="${cx}" cy="${cy}" r="${r}" fill="${c}" opacity=".6" filter="url(#bs)"/>
+ <circle cx="${cx}" cy="${cy}" r="${r}" fill="url(#g)" stroke="${c}" stroke-width="2"/>${lat}
+ <g stroke="${AX}" stroke-width="1.2" fill="none"><path d="M${cx-r} ${cy+r+26}H${cx+r}M${cx-r} ${cy+r+20}v12M${cx+r} ${cy+r+20}v12"/></g>
+ <text x="${cx}" y="${cy+r+50}" text-anchor="middle" fill="${AX}" font-size="14">diameter ${(2*R).toFixed(1)} nm</text>`;
+}
+
+function energy(R,c){
+ const tot=EgX(R)-EB,k=1/ME_+1/MH,c1=tot*(1/ME_)/k,v1=tot*(1/MH)/k;
+ const lv=[[1,EB+c1],[2,EB+4*c1],[1,-v1],[2,-4*v1]];
+ const top=Math.max(5.2,EB+4*c1+.5),bot=Math.min(-1.2,-4*v1-.5),yE=e=>24+(top-e)/(top-bot)*330,cx=250,hw=40*R;
+ let s=`<line x1="40" y1="${yE(bot)}" x2="40" y2="${yE(top)}" stroke="${AX}"/>`;
+ const st=top-bot>10?2:1;
+ for(let e=Math.ceil(bot/st)*st;e<=top;e+=st)s+=`<text x="32" y="${yE(e)+4}" text-anchor="end" fill="${AX}" font-size="11">${e}</text><line x1="40" x2="44" y1="${yE(e)}" y2="${yE(e)}" stroke="${AX}"/>`;
+ s+=`<text x="12" y="${yE((top+bot)/2)}" fill="${AX}" font-size="11" transform="rotate(-90 12 ${yE((top+bot)/2)})" text-anchor="middle">Energy (eV)</text>
+ <g stroke="${AX}" stroke-dasharray="4 4"><line x1="44" x2="466" y1="${yE(EB)}" y2="${yE(EB)}"/><line x1="44" x2="466" y1="${yE(0)}" y2="${yE(0)}"/></g>
+ <text x="462" y="${yE(EB)-5}" text-anchor="end" fill="${AX}" font-size="11">bulk conduction band edge</text>
+ <text x="462" y="${yE(0)+14}" text-anchor="end" fill="${AX}" font-size="11">bulk valence band edge</text>
+ <g stroke="${c}" stroke-width="2.5" style="filter:drop-shadow(0 0 5px ${c})"><line x1="${cx-hw}" x2="${cx-hw}" y1="${yE(top)}" y2="${yE(bot)}"/><line x1="${cx+hw}" x2="${cx+hw}" y1="${yE(top)}" y2="${yE(bot)}"/></g>`;
+ const wave=(n,yl)=>{let d='';for(let i=0;i<=120;i++){const x=-1+i/60,t=n*PI*Math.abs(x),p=t<1e-6?1:Math.sin(t)/t;
+  d+=(i?'L':'M')+(cx+x*hw).toFixed(1)+' '+(yl-14*p).toFixed(1)}return d};
+ lv.forEach(([n,e],i)=>{const y=yE(e);
+  s+=`<line x1="${cx-hw}" x2="${cx+hw}" y1="${y}" y2="${y}" stroke="#a8bdd0" stroke-opacity=".5"/>
+  <path d="${wave(n,y)}" fill="none" stroke="${c}" stroke-width="2" style="filter:drop-shadow(0 0 4px ${c})"/>
+  <text x="${cx+hw+6}" y="${y+4}" fill="${AX}" font-size="11">${i<2?'e':'h'}<tspan dy="3" font-size="8">${n}</tspan></text>`});
+ const y1=yE(EB+c1),y2=yE(-v1);
+ s+=`<path d="M${cx} ${y1+4}V${y2-6}" stroke="${c}" stroke-width="2" stroke-dasharray="3 3"/><path d="M${cx-5} ${y2-11}L${cx} ${y2-3}L${cx+5} ${y2-11}" fill="${c}"/>
+ <text x="${cx+8}" y="${(y1+y2)/2}" fill="${c}" font-size="12">photon</text>
+ <text x="${cx}" y="${yE(bot)+22}" text-anchor="middle" fill="${AX}" font-size="11">well width = 2R = ${(2*R).toFixed(1)} nm</text>`;
+ $('en').innerHTML=s;
+}
+
+function chart(id,fA,fB,y0,y1,st,yl,colored,bulk,R,c,fix){
+ const W=440,H=270,L=54,Rr=16,T=14,B=42,x=r=>L+(r-1)/3*(W-L-Rr),y=v=>T+(y1-v)/(y1-y0)*(H-T-B),ok=v=>v>=y0&&v<=y1;
+ let s=`<line x1="${L}" y1="${T}" x2="${L}" y2="${H-B}" stroke="${AX}"/><line x1="${L}" y1="${H-B}" x2="${W-Rr}" y2="${H-B}" stroke="${AX}"/>`;
+ for(let v=Math.ceil(y0/st)*st;v<=y1+1e-9;v+=st)s+=`<line x1="${L}" x2="${W-Rr}" y1="${y(v)}" y2="${y(v)}" stroke="${GR}"/><text x="${L-6}" y="${y(v)+4}" text-anchor="end" fill="${AX}" font-size="11">${fix?v.toFixed(1):Math.round(v)}</text>`;
+ for(let r=1;r<=4;r++)s+=`<text x="${x(r)}" y="${H-B+16}" text-anchor="middle" fill="${AX}" font-size="11">${r}</text>`;
+ s+=`<text x="${(L+W-Rr)/2}" y="${H-8}" text-anchor="middle" fill="${AX}" font-size="12">Radius (nm)</text><text x="12" y="${(T+H-B)/2}" fill="${AX}" font-size="12" text-anchor="middle" transform="rotate(-90 12 ${(T+H-B)/2})">${yl}</text>`;
+ s+=`<line x1="${L}" x2="${W-Rr}" y1="${y(bulk)}" y2="${y(bulk)}" stroke="${AX}" stroke-dasharray="1 4" stroke-width="1.5"/>`;
+ const curve=(f,a,dash)=>{for(let r=1;r<4-1e-9;r+=.05){const p=f(r),q=f(r+.05);if(!ok(p)||!ok(q))continue;
+  s+=`<line x1="${x(r)}" y1="${y(p)}" x2="${x(r+.05)}" y2="${y(q)}" stroke="${a?col(q):'#cfe6ff'}" stroke-width="${dash?2:3.5}" stroke-linecap="round" opacity="${dash?.4:1}" ${dash?'stroke-dasharray="4 4"':''}/>`}};
+ curve(fB,colored,true);curve(fA,colored,false);
+ const v=fA(R);
+ if(ok(v))s+=`<line x1="${x(R)}" x2="${x(R)}" y1="${y(v)}" y2="${H-B}" stroke="${c}" stroke-dasharray="3 3"/><line x1="${L}" x2="${x(R)}" y1="${y(v)}" y2="${y(v)}" stroke="${c}" stroke-dasharray="3 3"/>
+ <circle cx="${x(R)}" cy="${y(v)}" r="9" fill="${c}" opacity=".35"/><circle cx="${x(R)}" cy="${y(v)}" r="5.5" fill="${c}" stroke="#fff" stroke-width="1.5"/>`;
+ $(id).innerHTML=s;
+}
+
+function update(){
+ const R=+$('sl').value,w=lamX(R),c=col(w);
+ document.documentElement.style.setProperty('--c',c);
+ $('rv').textContent=R.toFixed(2)+' nm';$('sD').textContent=(2*R).toFixed(1)+' nm';
+ $('sE').textContent=EgX(R).toFixed(2)+' eV';$('sL').textContent=Math.round(w)+' nm';
+ $('sC').textContent=cname(w);$('sw').style.background=c;
+ $('mE').classList.toggle('on',mode=='exp');$('mB').classList.toggle('on',mode=='brus');
+ $('mn').textContent=mode=='exp'?'Measured CdSe sizing curve. Valid for about 2 to 8 nm diameter.':'Effective-mass theory with an infinite well. It drifts from experiment for small dots.';
+ dot(R,c);energy(R,c);
+ const A=mode=='exp'?lamE:lamB,Bf=mode=='exp'?lamB:lamE;
+ chart('c1',r=>1239.84/A(r),r=>1239.84/Bf(r),1.5,3.5,.5,'Band gap (eV)',false,EB,R,c,true);
+ chart('c2',A,Bf,400,750,50,'Wavelength (nm)',true,1239.84/EB,R,c,false);
+}
+$('sl').addEventListener('input',update);
+$('mE').onclick=()=>{mode='exp';update()};$('mB').onclick=()=>{mode='brus';update()};update();
+</script>
+</body>
+</html>
